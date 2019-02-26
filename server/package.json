@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "graphql": "^14.1.1",
+    "prisma-client-lib": "^1.28.0-beta",
+    "typescript": "^3.3.3333"
+  },
+  "name": "prisma-hello",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "create": "ts-node index"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
