@@ -3,7 +3,11 @@
 # dependencies
 client/node_modules
 client/package-lock.json
+client/yarn.lock
 server/node_modules
+
+# docz dev
+client/.docz/*
 
 # testing
 # client/coverage
