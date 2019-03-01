@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from "react-apollo";
-import UsersTable from './UsersTable';
+import UsersTable from './containers/UsersTable';
 import './App.css';
 
 const client = new ApolloClient ({
