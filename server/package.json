@@ -1,16 +1,22 @@
 {
   "dependencies": {
     "graphql": "^14.1.1",
+    "graphql-yoga": "^1.17.4",
+    "nodemon": "^1.18.10",
     "prisma-client-lib": "^1.28.0-beta",
     "typescript": "^3.3.3333"
+  },
+  "scripts": {
+    "pd": "prisma deploy",
+    "gg": "graphqlgen",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "start": "nodemon"
   },
   "name": "prisma-hello",
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {},
-  "scripts": {
-    "create": "ts-node index"
-  },
   "author": "",
   "license": "ISC",
   "description": ""

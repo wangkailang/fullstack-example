@@ -1,30 +1,7 @@
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
-
-const GET_USERS = gql`{
-  users {
-    id
-    name
-  }
-}`;
-const CREATE_USER = gql`
-  mutation CreateUser($data: UserCreateInput!) {
-    createUser(data: $data) {
-      id
-      name
-      email,
-    }
-  }
-`;
-const DELETE_USER = gql`
-  mutation DeleteUser($where: UserWhereUniqueInput!) {
-    deleteUser(where: $where) {
-      id
-    }
-  }
-`;
+import { GET_USERS, CREATE_USER, DELETE_USER } from '../../gqls/users';
 
 class UsersTable extends React.Component {
   state = {
@@ -81,7 +58,7 @@ class UsersTable extends React.Component {
                               onClick={async () => {
                                 deleteUser({
                                   variables: {
-                                    where: { id }
+                                    id
                                   }
                                 })
                               }}
@@ -117,8 +94,8 @@ class UsersTable extends React.Component {
                         event.stopPropagation();
                         await createUser({
                           variables: {
-                            data: {
-                              name: this.state.name
+                            input: {
+                              name: this.state.name,
                             }
                           }
                         })

@@ -6,6 +6,9 @@ client/package-lock.json
 client/yarn.lock
 server/node_modules
 
+# graphqlgen tmp
+server/src/generated/tmp-resolvers
+
 # docz dev
 client/.docz/*
 
