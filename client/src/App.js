@@ -5,7 +5,7 @@ import UsersTable from './containers/UsersTable';
 import './App.css';
 
 const client = new ApolloClient ({
-  uri: 'http://localhost:4466',
+  uri: 'http://localhost:4000',
 });
 
 class App extends Component {

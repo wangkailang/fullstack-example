@@ -10,17 +10,16 @@ const GET_USERS = gql`{
   }
 }`;
 const CREATE_USER = gql`
-  mutation CreateUser($data: UserCreateInput!) {
-    createUser(data: $data) {
+  mutation CreateUser($name: String!) {
+    createUser(name: $name) {
       id
       name
-      email,
     }
   }
 `;
 const DELETE_USER = gql`
-  mutation DeleteUser($where: UserWhereUniqueInput!) {
-    deleteUser(where: $where) {
+  mutation DeleteUser($id: ID!) {
+    deleteUser(id: $id) {
       id
     }
   }
@@ -81,7 +80,7 @@ class UsersTable extends React.Component {
                               onClick={async () => {
                                 deleteUser({
                                   variables: {
-                                    where: { id }
+                                    id
                                   }
                                 })
                               }}
@@ -117,9 +116,7 @@ class UsersTable extends React.Component {
                         event.stopPropagation();
                         await createUser({
                           variables: {
-                            data: {
-                              name: this.state.name
-                            }
+                            name: this.state.name,
                           }
                         })
                         this.handleClose();

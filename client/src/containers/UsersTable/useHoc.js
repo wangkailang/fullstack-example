@@ -10,17 +10,16 @@ const GET_USERS = gql`{
 }`
 
 const CREATE_USER = gql`
-  mutation CreateUser($data: UserCreateInput!) {
-    createUser(data: $data) {
+  mutation CreateUser($name: String!) {
+    createUser(name: $name) {
       id
       name
-      email,
     }
   }
 `
 const DELETE_USER = gql`
-  mutation DeleteUser($where: UserWhereUniqueInput!) {
-    deleteUser(where: $where) {
+  mutation DeleteUser($id: ID!) {
+    deleteUser(id: $id) {
       id
     }
   }
@@ -54,9 +53,7 @@ class UsersTable extends React.PureComponent {
     event.stopPropagation();
     await this.props.mutate({
       variables:{
-        data: {
-          name:  this.state.name
-        }
+        name: this.state.name
       }
     })
     await this.props.data.refetch();
@@ -66,9 +63,7 @@ class UsersTable extends React.PureComponent {
     return async () => {
       await this.props.mutate({
         variables:{
-          where: {
-            id
-          }
+          id
         }
       })
       await this.props.data.refetch();
