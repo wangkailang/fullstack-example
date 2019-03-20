@@ -304,8 +304,12 @@ export namespace PostResolvers {
 export namespace MutationResolvers {
   export const defaultResolvers = {};
 
-  export interface ArgsCreateUser {
+  export interface CreateUserInput {
     name: string;
+  }
+
+  export interface ArgsCreateUser {
+    input: CreateUserInput;
   }
 
   export interface ArgsDeleteUser {

@@ -2,8 +2,12 @@ type Query {
   users: [User!]!
 }
 
+input CreateUserInput {
+  name: String!
+}
+
 type Mutation {
-  createUser(name: String!): User!
+  createUser(input: CreateUserInput!): User!
   deleteUser(id: ID!): User
 }
 

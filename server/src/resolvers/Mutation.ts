@@ -7,9 +7,7 @@ import { MutationResolvers } from "../generated/graphqlgen";
 export const Mutation: MutationResolvers.Type = {
   ...MutationResolvers.defaultResolvers,
   createUser: (parent, args, ctx) => {
-    return ctx.prisma.createUser({
-      name: args.name
-    });
+    return ctx.prisma.createUser(args.input);
   },
   deleteUser: (parent, args, ctx) => {
     return ctx.prisma.deleteUser({

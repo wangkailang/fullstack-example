@@ -1,35 +1,12 @@
 import React from 'react';
 import { compose, graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
-const GET_USERS = gql`{
-  users {
-    id
-    name
-  }
-}`
-
-const CREATE_USER = gql`
-  mutation CreateUser($name: String!) {
-    createUser(name: $name) {
-      id
-      name
-    }
-  }
-`
-const DELETE_USER = gql`
-  mutation DeleteUser($id: ID!) {
-    deleteUser(id: $id) {
-      id
-    }
-  }
-`;
-
+import { GET_USERS, CREATE_USER, DELETE_USER } from '../../gqls/users';
 
 const connector = compose(
   graphql(GET_USERS),
-  graphql(CREATE_USER),
-  graphql(DELETE_USER),
+  graphql(CREATE_USER, { name: 'createUser' }),
+  graphql(DELETE_USER, { name: 'deleteUser' }),
 )
 
 class UsersTable extends React.PureComponent {
@@ -51,9 +28,11 @@ class UsersTable extends React.PureComponent {
   handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
-    await this.props.mutate({
+    await this.props.createUser({
       variables:{
-        name: this.state.name
+        input: {
+          name: this.state.name
+        }
       }
     })
     await this.props.data.refetch();
@@ -61,7 +40,7 @@ class UsersTable extends React.PureComponent {
   }
   delete = id => {
     return async () => {
-      await this.props.mutate({
+      await this.props.deleteUser({
         variables:{
           id
         }
