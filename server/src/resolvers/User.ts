@@ -8,5 +8,8 @@ export const User: UserResolvers.Type = {
 
   posts: (parent, args, ctx) => {
     throw new Error("Resolver not implemented");
+  },
+  comments: (parent, args, ctx) => {
+    throw new Error("Resolver not implemented");
   }
 };

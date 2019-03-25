@@ -1,15 +1,19 @@
 import { Resolvers } from "../generated/graphqlgen";
 
 import { Query } from "./Query";
-import { User } from "./User";
 import { Post } from "./Post";
+import { User } from "./User";
+import { Comment } from "./Comment";
 import { Mutation } from "./Mutation";
+import { AuthPayload } from "./AuthPayload";
 
-const resolvers: Resolvers = {
+export const resolvers: Resolvers = {
   Query,
-  User,
   Post,
-  Mutation
+  User,
+  Comment,
+  Mutation,
+  AuthPayload
 };
 
 export default resolvers;

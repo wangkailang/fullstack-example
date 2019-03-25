@@ -1,25 +1,53 @@
 type Query {
-  users: [User!]!
+  posts: [Post!]!
 }
 
-input CreateUserInput {
+input CreatePostInput {
+  title: String!
+  published: Boolean!
+}
+
+input SignUpInput {
+  email: String!,
+  password: String!
   name: String!
+}
+input LoginInput {
+  email: String!,
+  password: String!
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User!
-  deleteUser(id: ID!): User
+  createPost(input: CreatePostInput!): Post!
+  deletePost(id: ID!): Post,
+  signup(input: SignUpInput!): AuthPayload
+  login(input: LoginInput!): AuthPayload
 }
 
 type User {
   id: ID!
-  email: String
+  email: String!
   name: String!
+  password: String!
   posts: [Post]!
+  comments: [Comment]!
 }
 
 type Post {
   id: ID!
   title: String!
+  published: Boolean!
   author: User
+  comments: [Comment]!
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  writtenBy: User!
 }

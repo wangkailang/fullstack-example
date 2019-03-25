@@ -500,8 +500,9 @@ type Subscription {
 
 type User {
   id: ID!
-  email: String
+  email: String!
   name: String!
+  password: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
 }
@@ -513,8 +514,9 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  email: String
+  email: String!
   name: String!
+  password: String!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutWrittenByInput
 }
@@ -530,14 +532,16 @@ input UserCreateOneWithoutPostsInput {
 }
 
 input UserCreateWithoutCommentsInput {
-  email: String
+  email: String!
   name: String!
+  password: String!
   posts: PostCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutPostsInput {
-  email: String
+  email: String!
   name: String!
+  password: String!
   comments: CommentCreateManyWithoutWrittenByInput
 }
 
@@ -553,6 +557,8 @@ enum UserOrderByInput {
   email_DESC
   name_ASC
   name_DESC
+  password_ASC
+  password_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -561,8 +567,9 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  email: String
+  email: String!
   name: String!
+  password: String!
 }
 
 type UserSubscriptionPayload {
@@ -586,6 +593,7 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   email: String
   name: String
+  password: String
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutWrittenByInput
 }
@@ -593,6 +601,7 @@ input UserUpdateInput {
 input UserUpdateManyMutationInput {
   email: String
   name: String
+  password: String
 }
 
 input UserUpdateOneRequiredWithoutCommentsInput {
@@ -614,12 +623,14 @@ input UserUpdateOneWithoutPostsInput {
 input UserUpdateWithoutCommentsDataInput {
   email: String
   name: String
+  password: String
   posts: PostUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutPostsDataInput {
   email: String
   name: String
+  password: String
   comments: CommentUpdateManyWithoutWrittenByInput
 }
 
@@ -676,6 +687,20 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput

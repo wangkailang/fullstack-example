@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from "react-apollo";
-import UsersTable from './containers/UsersTable';
+import { BrowserRouter } from 'react-router-dom';
+import Routes from './routes';
 import './App.css';
 
 const client = new ApolloClient ({
@@ -12,10 +13,9 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <div className="App">
-          <h2>Appllo App</h2>
-          <UsersTable />
-        </div>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
       </ApolloProvider>
     );
   }

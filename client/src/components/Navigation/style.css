@@ -1,0 +1,19 @@
+.Navigation__item a,
+.Navigation__item span {
+  color: #3b3e4e;
+  font-size: 13px;
+  line-height: 36px;
+  display: block;
+  padding-left: 20px;
+}
+.Navigation__item span {
+  cursor: pointer;
+}
+.Navigation__item a.active,
+.Navigation__item span.active {
+  background: #ccc;
+}
+.Navigation__item a:hover,
+.Navigation__item span:hober {
+  background: #ccc;
+}

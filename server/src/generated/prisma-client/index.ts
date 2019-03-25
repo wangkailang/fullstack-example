@@ -218,6 +218,8 @@ export type UserOrderByInput =
   | "email_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "password_ASC"
+  | "password_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -240,8 +242,9 @@ export interface CommentCreateManyInput {
 }
 
 export interface UserCreateWithoutPostsInput {
-  email?: String;
+  email: String;
   name: String;
+  password: String;
   comments?: CommentCreateManyWithoutWrittenByInput;
 }
 
@@ -334,6 +337,7 @@ export interface PostWhereInput {
 export interface UserUpdateWithoutCommentsDataInput {
   email?: String;
   name?: String;
+  password?: String;
   posts?: PostUpdateManyWithoutAuthorInput;
 }
 
@@ -369,6 +373,7 @@ export interface PostUpdateManyWithoutAuthorInput {
 export interface UserUpdateManyMutationInput {
   email?: String;
   name?: String;
+  password?: String;
 }
 
 export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -377,8 +382,9 @@ export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
 }
 
 export interface UserCreateInput {
-  email?: String;
+  email: String;
   name: String;
+  password: String;
   posts?: PostCreateManyWithoutAuthorInput;
   comments?: CommentCreateManyWithoutWrittenByInput;
 }
@@ -512,6 +518,20 @@ export interface UserWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
   posts_every?: PostWhereInput;
   posts_some?: PostWhereInput;
   posts_none?: PostWhereInput;
@@ -534,8 +554,9 @@ export interface CommentUpdateManyWithWhereNestedInput {
 }
 
 export interface UserCreateWithoutCommentsInput {
-  email?: String;
+  email: String;
   name: String;
+  password: String;
   posts?: PostCreateManyWithoutAuthorInput;
 }
 
@@ -605,6 +626,7 @@ export interface PostScalarWhereInput {
 export interface UserUpdateInput {
   email?: String;
   name?: String;
+  password?: String;
   posts?: PostUpdateManyWithoutAuthorInput;
   comments?: CommentUpdateManyWithoutWrittenByInput;
 }
@@ -725,6 +747,7 @@ export interface UserCreateOneWithoutCommentsInput {
 export interface UserUpdateWithoutPostsDataInput {
   email?: String;
   name?: String;
+  password?: String;
   comments?: CommentUpdateManyWithoutWrittenByInput;
 }
 
@@ -738,8 +761,9 @@ export interface NodeNode {
 
 export interface UserPreviousValues {
   id: ID_Output;
-  email?: String;
+  email: String;
   name: String;
+  password: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -748,6 +772,7 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
   name: () => Promise<String>;
+  password: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -756,6 +781,7 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateComment {
@@ -915,14 +941,16 @@ export interface UserConnectionSubscription
 
 export interface User {
   id: ID_Output;
-  email?: String;
+  email: String;
   name: String;
+  password: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
   name: () => Promise<String>;
+  password: () => Promise<String>;
   posts: <T = FragmentableArray<Post>>(
     args?: {
       where?: PostWhereInput;
@@ -953,6 +981,7 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   posts: <T = Promise<AsyncIterator<PostSubscription>>>(
     args?: {
       where?: PostWhereInput;
