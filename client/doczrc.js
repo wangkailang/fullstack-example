@@ -1,6 +1,7 @@
 import { css } from 'docz-plugin-css';
 
 export default {
+  dest: '../docs',
   title: 'React Components',
   description: 'This is my awesome documentation',
   themeConfig: {
