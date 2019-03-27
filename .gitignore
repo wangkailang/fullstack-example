@@ -10,8 +10,7 @@ server/node_modules
 server/src/generated/tmp-resolvers
 
 # docz dev
-client/.docz/cache/*
-client/.docz/app/*
+client/.docz/*
 
 # testing
 # client/coverage
