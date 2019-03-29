@@ -1,6 +1,5 @@
 import React from 'react';
-import { hierarchy, cluster, tree } from 'd3-hierarchy';
-import { selectAll } from 'd3-selection';
+import { hierarchy, cluster } from 'd3-hierarchy';
 import datas from './datas';
 import './style.scss';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { hierarchy, tree } from 'd3-hierarchy';
+import { hierarchy, cluster } from 'd3-hierarchy';
 import { select } from 'd3-selection';
 import datas from './datas';
 import './style.scss'
@@ -8,6 +8,7 @@ import './style.scss'
 const width = 700;
 const height = 500;
 const diameter = 10;
+const distance = 160;
 
 // Collapse the node and all it's children
 function collapse(d) {
@@ -25,22 +26,18 @@ function diagonal(s, d) {
     C ${averageY}, ${s.x} ${averageY}, ${d.x} ${d.y}, ${d.x}`;
 }
 
+const clusterLayout = cluster().size([height, width - 100]);
+// Assigns parent, children, height, depth
+const root = hierarchy(datas, function (d) { return d.children; });
+root.x0 = height / 2;
+root.y0 = 0;
+
 
 class CollapsibleTree extends React.PureComponent {
-  get root() {
-    // Assigns parent, children, height, depth
-    const root = hierarchy(datas, function (d) { return d.children; });
-    root.x0 = height / 2;
-    root.y0 = 0;
-    return root;
-  }
   componentDidMount() {
-    const svg = select(".CollapsibleTree svg g");
+    const svg = select('.CollapsibleTree svg g');
     let i = 0;
-    // declares a tree layout and assigns the size
-    const treemap = tree().size([height, width]);
 
-    const root = this.root;
     // Collapse after the second level
     root.children.forEach(collapse);
     update(root);
@@ -48,16 +45,13 @@ class CollapsibleTree extends React.PureComponent {
     function update(source) {
 
       // Assigns the x and y position for the nodes
-      const treeData = treemap(root);
+      const treeData = clusterLayout(root);
 
       // Compute the new tree layout.
       const nodes = treeData.descendants();
       const links = treeData.descendants().slice(1);
 
-      // Normalize for fixed-depth.
-      nodes.forEach(function (d) { d.y = d.depth * 180 });
-
-      // ****************** Nodes section ***************************
+      nodes.forEach(function (d) { d.y = d.depth * distance });
 
       // Update the nodes...
       const node = svg.selectAll('g.node')
@@ -109,21 +103,11 @@ class CollapsibleTree extends React.PureComponent {
 
 
       // Remove any exiting nodes
-      const nodeExit = node.exit()
+     node.exit()
         .attr("transform", function (d) {
           return "translate(" + source.y + "," + source.x + ")";
         })
         .remove();
-
-      // On exit reduce the node circles size to 0
-      nodeExit.select('circle')
-        .attr('r', 1e-6);
-
-      // On exit reduce the opacity of text labels
-      nodeExit.select('text')
-        .style('fill-opacity', 1e-6);
-
-      // ****************** links section ***************************
 
       // Update the links...
       const link = svg.selectAll('path.link')
