@@ -1,0 +1,10 @@
+.Dashboard {
+  display: flex;
+}
+.Dashboard__sidebar {
+  width: 200px;
+}
+.Dashboard__main {
+  width: 100%;
+  padding: 25px;
+}

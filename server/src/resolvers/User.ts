@@ -6,7 +6,10 @@ import { UserResolvers } from "../generated/graphqlgen";
 export const User: UserResolvers.Type = {
   ...UserResolvers.defaultResolvers,
 
-  posts: (parent, args, ctx) => {
+  post: (parent, args, ctx) => {
+    throw new Error("Resolver not implemented");
+  },
+  comments: (parent, args, ctx) => {
     throw new Error("Resolver not implemented");
   }
 };

@@ -1,0 +1,24 @@
+.SignupPage,
+.LoginPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: #2f3384;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.SignupPage__form,
+.LoginPage__form {
+  width: 460px;
+}
+.SignupPage__form label,
+.LoginPage__form label {
+  color: #fff;
+}
+.SignupPage__btn,
+.LoginPage__btn {
+  text-align: center;
+}

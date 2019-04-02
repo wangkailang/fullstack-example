@@ -1,7 +1,9 @@
 mutation {
   createUser(
     data: {
-      name: 'Alice',
+      name: 'test',
+      email: 'test@tt.com',
+      password: '123456',
       post: {
         create: {
           title: "the data layer model apps"

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
-import { GET_USERS, CREATE_USER, DELETE_USER } from '../../gqls/users';
+import { GET_GRAFTS, CREATE_DRAFT, DELETE_POST } from '../../gqls/posts';
 
-class UsersTable extends React.Component {
+class PostsTable extends React.Component {
   state = {
     show: false,
-    name: '',
+    title: '',
   }
   handleClose = () => {
     this.setState({ show: false });
@@ -16,13 +16,13 @@ class UsersTable extends React.Component {
   }
   handleNameChange  = event => {
     this.setState({
-      name: event.target.value
+      title: event.target.value
     })
   }
 
   render() {  
     return (
-      <Query query={GET_USERS}>
+      <Query query={GET_GRAFTS}>
         {({ loading, error, data }) => {
           if (loading) return <p>loading...</p>;
           if (error) return <p>Error: {error}</p>;
@@ -33,30 +33,32 @@ class UsersTable extends React.Component {
                   <tr>
                     <td>ID</td>
                     <td>Name</td>
+                    <td>Published</td>
                     <td>Delete</td>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.users.map(({ id, name }) => (
+                  {data.drafts.map(({ id, title, published }) => (
                     <tr key={id}>
                       <td>{id}</td>
-                      <td>{name}</td>
+                      <td>{title}</td>
+                      <td>{published ? '已发布' : '未发布'}</td>
                       <td>
                         <Mutation
-                          mutation={DELETE_USER}
-                          update={(cache, { data: { deleteUser } }) => {
-                            const { users } = cache.readQuery({ query:  GET_USERS});
+                          mutation={DELETE_POST}
+                          update={(cache, { data: { deletePost } }) => {
+                            const { drafts } = cache.readQuery({ query:  GET_GRAFTS});
                             cache.writeQuery({
-                              query: GET_USERS,
-                              data: { users: users.filter(user => user.id !== deleteUser.id) }
+                              query: GET_GRAFTS,
+                              data: { drafts: drafts.filter(d => d.id !== deletePost.id) }
                             })
                           }}
                         >
-                          {deleteUser => (
+                          {deletePost => (
                             <Button
                               variant="danger"
                               onClick={async () => {
-                                deleteUser({
+                                deletePost({
                                   variables: {
                                     id
                                   }
@@ -75,44 +77,46 @@ class UsersTable extends React.Component {
               </div>
               <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Add User</Modal.Title>
+                  <Modal.Title>Add Post</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <Mutation
-                    mutation={CREATE_USER}
-                    update={(cache, { data: { createUser } }) => {
-                      const { users } = cache.readQuery({ query:  GET_USERS});
+                    mutation={CREATE_DRAFT}
+                    update={(cache, { data: { createDraft } }) => {
+                      const { drafts } = cache.readQuery({ query:  GET_GRAFTS});
+                      createDraft.published = false;
                       cache.writeQuery({
-                        query: GET_USERS,
-                        data: { users: users.concat([createUser]) }
+                        query: GET_GRAFTS,
+                        data: { drafts: drafts.concat([createDraft]) }
                       })
                     }}
                   >
-                    {(createUser) =>(
+                    {(createDraft) =>(
                       <Form validated onSubmit={async event => {
                         event.preventDefault();
                         event.stopPropagation();
-                        await createUser({
+                        await createDraft({
                           variables: {
                             input: {
-                              name: this.state.name,
+                              title: this.state.title,
+                              published: false,
                             }
                           }
                         })
                         this.handleClose();
                       }}>
-                        <Form.Group as={Row} controlId="user">
-                          <Form.Label column sm="2">Name:</Form.Label>
+                        <Form.Group as={Row} controlId="post">
+                          <Form.Label column sm="2">Title:</Form.Label>
                           <Col sm="10">
                             <Form.Control
                               required
                               type="text"
-                              placeholder="Enter your name"
+                              placeholder="Enter title"
                               onChange={this.handleNameChange}
                             />
                           </Col>
                           <Form.Control.Feedback type="invalid">
-                            Please provide a valid name.
+                            Please provide a valid title.
                           </Form.Control.Feedback>
                         </Form.Group>
                         <Modal.Footer>
@@ -136,4 +140,4 @@ class UsersTable extends React.Component {
   }
 }
 
-export default UsersTable;
+export default PostsTable;
