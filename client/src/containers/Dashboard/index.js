@@ -5,14 +5,14 @@ import './style.css';
 
 class Dashboard extends React.PureComponent {
   render () {
-    const { location } = this.props;
+    const { location } = this.props
     return (
       <div className="Dashboard">
         <div className="Dashboard__sidebar">
           <Navigation {...this.props}/>
         </div>
         <div className="Dashboard__main">
-          <ResourcePage pathname={location.pathname} />
+          <ResourcePage location={location} />
         </div>
       </div>
     )

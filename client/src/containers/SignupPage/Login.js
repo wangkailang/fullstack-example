@@ -19,7 +19,6 @@ class LoginPage extends React.PureComponent {
       [AUTH_TOKEN]: token,
     });
     this.props.history.replace('/');
-    // window.location.reload();
   }
   render() {
     return (
@@ -33,12 +32,11 @@ class LoginPage extends React.PureComponent {
               <Formik
                 initialValues={initialValues}
                 onSubmit={async (values, { setSubmitting }) => {
-                  const datas = await login({
+                  await login({
                     variables: {
                       input: values
                     }
                   });
-                  console.log('datas', datas);
                   setSubmitting(false);
                 }}
               >

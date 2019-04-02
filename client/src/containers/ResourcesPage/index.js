@@ -1,5 +1,6 @@
 import React from 'react';
 import PostsTable from '../PostsTable';
+import NotFoundPage from '../NotFound';
 
 const resourceMap = {
   posts: PostsTable,
@@ -8,11 +9,12 @@ const resourceMap = {
 
 
 export default props => {
-  const { pathname, ...rest } = props;
+  const { location, ...rest } = props;
+  const { pathname } = location;
   const Component =  resourceMap[(pathname && pathname.split('/')[2]) || 'default'] ;
   return (
     <div className="ResourcePage">
-      <Component {...rest}/>
+      {Component ? <Component {...rest}/> : <NotFoundPage location={location}/>}
     </div>
   );
 }

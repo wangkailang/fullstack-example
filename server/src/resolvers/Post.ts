@@ -6,8 +6,8 @@ import { PostResolvers } from "../generated/graphqlgen";
 export const Post: PostResolvers.Type = {
   ...PostResolvers.defaultResolvers,
 
-  author: (parent, args, ctx) => {
-    throw new Error("Resolver not implemented");
+  author: ({ id }, args, context) => {
+    return context.prisma.post({ id }).author();
   },
   comments: (parent, args, ctx) => {
     throw new Error("Resolver not implemented");

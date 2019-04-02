@@ -7,6 +7,23 @@ import { AuthPayload, Context } from "../types";
 export namespace QueryResolvers {
   export const defaultResolvers = {};
 
+  export type FeedResolver =
+    | ((
+        parent: undefined,
+        args: {},
+        ctx: Context,
+        info: GraphQLResolveInfo
+      ) => Post[] | Promise<Post[]>)
+    | {
+        fragment: string;
+        resolve: (
+          parent: undefined,
+          args: {},
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => Post[] | Promise<Post[]>;
+      };
+
   export type PostsResolver =
     | ((
         parent: undefined,
@@ -24,7 +41,58 @@ export namespace QueryResolvers {
         ) => Post[] | Promise<Post[]>;
       };
 
+  export type DraftsResolver =
+    | ((
+        parent: undefined,
+        args: {},
+        ctx: Context,
+        info: GraphQLResolveInfo
+      ) => Post[] | Promise<Post[]>)
+    | {
+        fragment: string;
+        resolve: (
+          parent: undefined,
+          args: {},
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => Post[] | Promise<Post[]>;
+      };
+
+  export type MeResolver =
+    | ((
+        parent: undefined,
+        args: {},
+        ctx: Context,
+        info: GraphQLResolveInfo
+      ) => User | null | Promise<User | null>)
+    | {
+        fragment: string;
+        resolve: (
+          parent: undefined,
+          args: {},
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => User | null | Promise<User | null>;
+      };
+
   export interface Type {
+    feed:
+      | ((
+          parent: undefined,
+          args: {},
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => Post[] | Promise<Post[]>)
+      | {
+          fragment: string;
+          resolve: (
+            parent: undefined,
+            args: {},
+            ctx: Context,
+            info: GraphQLResolveInfo
+          ) => Post[] | Promise<Post[]>;
+        };
+
     posts:
       | ((
           parent: undefined,
@@ -40,6 +108,40 @@ export namespace QueryResolvers {
             ctx: Context,
             info: GraphQLResolveInfo
           ) => Post[] | Promise<Post[]>;
+        };
+
+    drafts:
+      | ((
+          parent: undefined,
+          args: {},
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => Post[] | Promise<Post[]>)
+      | {
+          fragment: string;
+          resolve: (
+            parent: undefined,
+            args: {},
+            ctx: Context,
+            info: GraphQLResolveInfo
+          ) => Post[] | Promise<Post[]>;
+        };
+
+    me:
+      | ((
+          parent: undefined,
+          args: {},
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => User | null | Promise<User | null>)
+      | {
+          fragment: string;
+          resolve: (
+            parent: undefined,
+            args: {},
+            ctx: Context,
+            info: GraphQLResolveInfo
+          ) => User | null | Promise<User | null>;
         };
   }
 }
@@ -108,7 +210,7 @@ export namespace PostResolvers {
         args: {},
         ctx: Context,
         info: GraphQLResolveInfo
-      ) => User | null | Promise<User | null>)
+      ) => User | Promise<User>)
     | {
         fragment: string;
         resolve: (
@@ -116,7 +218,7 @@ export namespace PostResolvers {
           args: {},
           ctx: Context,
           info: GraphQLResolveInfo
-        ) => User | null | Promise<User | null>;
+        ) => User | Promise<User>;
       };
 
   export type CommentsResolver =
@@ -194,7 +296,7 @@ export namespace PostResolvers {
           args: {},
           ctx: Context,
           info: GraphQLResolveInfo
-        ) => User | null | Promise<User | null>)
+        ) => User | Promise<User>)
       | {
           fragment: string;
           resolve: (
@@ -202,7 +304,7 @@ export namespace PostResolvers {
             args: {},
             ctx: Context,
             info: GraphQLResolveInfo
-          ) => User | null | Promise<User | null>;
+          ) => User | Promise<User>;
         };
 
     comments:
@@ -228,8 +330,7 @@ export namespace UserResolvers {
   export const defaultResolvers = {
     id: (parent: User) => parent.id,
     email: (parent: User) => parent.email,
-    name: (parent: User) => parent.name,
-    password: (parent: User) => parent.password
+    name: (parent: User) => parent.name
   };
 
   export type IdResolver =
@@ -283,13 +384,13 @@ export namespace UserResolvers {
         ) => string | Promise<string>;
       };
 
-  export type PasswordResolver =
+  export type PostResolver =
     | ((
         parent: User,
         args: {},
         ctx: Context,
         info: GraphQLResolveInfo
-      ) => string | Promise<string>)
+      ) => Post[] | Promise<Post[]>)
     | {
         fragment: string;
         resolve: (
@@ -297,24 +398,7 @@ export namespace UserResolvers {
           args: {},
           ctx: Context,
           info: GraphQLResolveInfo
-        ) => string | Promise<string>;
-      };
-
-  export type PostsResolver =
-    | ((
-        parent: User,
-        args: {},
-        ctx: Context,
-        info: GraphQLResolveInfo
-      ) => Array<Post | null> | Promise<Array<Post | null>>)
-    | {
-        fragment: string;
-        resolve: (
-          parent: User,
-          args: {},
-          ctx: Context,
-          info: GraphQLResolveInfo
-        ) => Array<Post | null> | Promise<Array<Post | null>>;
+        ) => Post[] | Promise<Post[]>;
       };
 
   export type CommentsResolver =
@@ -386,13 +470,13 @@ export namespace UserResolvers {
           ) => string | Promise<string>;
         };
 
-    password:
+    post:
       | ((
           parent: User,
           args: {},
           ctx: Context,
           info: GraphQLResolveInfo
-        ) => string | Promise<string>)
+        ) => Post[] | Promise<Post[]>)
       | {
           fragment: string;
           resolve: (
@@ -400,24 +484,7 @@ export namespace UserResolvers {
             args: {},
             ctx: Context,
             info: GraphQLResolveInfo
-          ) => string | Promise<string>;
-        };
-
-    posts:
-      | ((
-          parent: User,
-          args: {},
-          ctx: Context,
-          info: GraphQLResolveInfo
-        ) => Array<Post | null> | Promise<Array<Post | null>>)
-      | {
-          fragment: string;
-          resolve: (
-            parent: User,
-            args: {},
-            ctx: Context,
-            info: GraphQLResolveInfo
-          ) => Array<Post | null> | Promise<Array<Post | null>>;
+          ) => Post[] | Promise<Post[]>;
         };
 
     comments:
@@ -567,11 +634,15 @@ export namespace MutationResolvers {
     password: string;
   }
 
-  export interface ArgsCreatePost {
+  export interface ArgsCreateDraft {
     input: CreatePostInput;
   }
 
   export interface ArgsDeletePost {
+    id: string;
+  }
+
+  export interface ArgsPublish {
     id: string;
   }
 
@@ -583,10 +654,10 @@ export namespace MutationResolvers {
     input: LoginInput;
   }
 
-  export type CreatePostResolver =
+  export type CreateDraftResolver =
     | ((
         parent: undefined,
-        args: ArgsCreatePost,
+        args: ArgsCreateDraft,
         ctx: Context,
         info: GraphQLResolveInfo
       ) => Post | Promise<Post>)
@@ -594,7 +665,7 @@ export namespace MutationResolvers {
         fragment: string;
         resolve: (
           parent: undefined,
-          args: ArgsCreatePost,
+          args: ArgsCreateDraft,
           ctx: Context,
           info: GraphQLResolveInfo
         ) => Post | Promise<Post>;
@@ -615,6 +686,23 @@ export namespace MutationResolvers {
           ctx: Context,
           info: GraphQLResolveInfo
         ) => Post | null | Promise<Post | null>;
+      };
+
+  export type PublishResolver =
+    | ((
+        parent: undefined,
+        args: ArgsPublish,
+        ctx: Context,
+        info: GraphQLResolveInfo
+      ) => Post | Promise<Post>)
+    | {
+        fragment: string;
+        resolve: (
+          parent: undefined,
+          args: ArgsPublish,
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => Post | Promise<Post>;
       };
 
   export type SignupResolver =
@@ -652,10 +740,10 @@ export namespace MutationResolvers {
       };
 
   export interface Type {
-    createPost:
+    createDraft:
       | ((
           parent: undefined,
-          args: ArgsCreatePost,
+          args: ArgsCreateDraft,
           ctx: Context,
           info: GraphQLResolveInfo
         ) => Post | Promise<Post>)
@@ -663,7 +751,7 @@ export namespace MutationResolvers {
           fragment: string;
           resolve: (
             parent: undefined,
-            args: ArgsCreatePost,
+            args: ArgsCreateDraft,
             ctx: Context,
             info: GraphQLResolveInfo
           ) => Post | Promise<Post>;
@@ -684,6 +772,23 @@ export namespace MutationResolvers {
             ctx: Context,
             info: GraphQLResolveInfo
           ) => Post | null | Promise<Post | null>;
+        };
+
+    publish:
+      | ((
+          parent: undefined,
+          args: ArgsPublish,
+          ctx: Context,
+          info: GraphQLResolveInfo
+        ) => Post | Promise<Post>)
+      | {
+          fragment: string;
+          resolve: (
+            parent: undefined,
+            args: ArgsPublish,
+            ctx: Context,
+            info: GraphQLResolveInfo
+          ) => Post | Promise<Post>;
         };
 
     signup:
@@ -724,6 +829,7 @@ export namespace MutationResolvers {
 
 export namespace AuthPayloadResolvers {
   export const defaultResolvers = {
+    user: (parent: AuthPayload) => parent.user,
     token: (parent: AuthPayload) =>
       parent.token === undefined ? null : parent.token
   };

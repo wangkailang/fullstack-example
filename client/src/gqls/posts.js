@@ -1,15 +1,18 @@
 import gql from 'graphql-tag';
 
-export const GET_POSTS = gql`{
-  posts {
+export const GET_GRAFTS = gql`{
+  drafts {
     id
     title
     published
+    author {
+      name
+    }
   }
 }`;
-export const CREATE_POST = gql`
-  mutation CreatePost($input: CreatePostInput!) {
-    createPost(input: $input) {
+export const CREATE_DRAFT = gql`
+  mutation CreateDraft($input: CreatePostInput!) {
+    createDraft(input: $input) {
       id
       title
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
-import { GET_POSTS, CREATE_POST, DELETE_POST } from '../../gqls/posts';
+import { GET_GRAFTS, CREATE_DRAFT, DELETE_POST } from '../../gqls/posts';
 
 class PostsTable extends React.Component {
   state = {
@@ -22,7 +22,7 @@ class PostsTable extends React.Component {
 
   render() {  
     return (
-      <Query query={GET_POSTS}>
+      <Query query={GET_GRAFTS}>
         {({ loading, error, data }) => {
           if (loading) return <p>loading...</p>;
           if (error) return <p>Error: {error}</p>;
@@ -38,7 +38,7 @@ class PostsTable extends React.Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.posts.map(({ id, title, published }) => (
+                  {data.drafts.map(({ id, title, published }) => (
                     <tr key={id}>
                       <td>{id}</td>
                       <td>{title}</td>
@@ -47,10 +47,10 @@ class PostsTable extends React.Component {
                         <Mutation
                           mutation={DELETE_POST}
                           update={(cache, { data: { deletePost } }) => {
-                            const { posts } = cache.readQuery({ query:  GET_POSTS});
+                            const { drafts } = cache.readQuery({ query:  GET_GRAFTS});
                             cache.writeQuery({
-                              query: GET_POSTS,
-                              data: { posts: posts.filter(post => post.id !== deletePost.id) }
+                              query: GET_GRAFTS,
+                              data: { drafts: drafts.filter(d => d.id !== deletePost.id) }
                             })
                           }}
                         >
@@ -81,21 +81,21 @@ class PostsTable extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                   <Mutation
-                    mutation={CREATE_POST}
-                    update={(cache, { data: { createPost } }) => {
-                      const { posts } = cache.readQuery({ query:  GET_POSTS});
-                      createPost.published = false;
+                    mutation={CREATE_DRAFT}
+                    update={(cache, { data: { createDraft } }) => {
+                      const { drafts } = cache.readQuery({ query:  GET_GRAFTS});
+                      createDraft.published = false;
                       cache.writeQuery({
-                        query: GET_POSTS,
-                        data: { posts: posts.concat([createPost]) }
+                        query: GET_GRAFTS,
+                        data: { drafts: drafts.concat([createDraft]) }
                       })
                     }}
                   >
-                    {(createPost) =>(
+                    {(createDraft) =>(
                       <Form validated onSubmit={async event => {
                         event.preventDefault();
                         event.stopPropagation();
-                        await createPost({
+                        await createDraft({
                           variables: {
                             input: {
                               title: this.state.title,

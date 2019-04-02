@@ -3,15 +3,22 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Dashboard from '../containers/Dashboard';
 import SignupPage from '../containers/SignupPage';
 import LoginPage from '../containers/SignupPage/Login';
+import NotFoundPage from '../containers/NotFound';
 import { AUTH_TOKEN } from '../constants';
 
-
+const ProtectedRoute = ({ component: Component, token, refreshToken, ...rest }) => {
+  return token ? (
+    <Route {...rest} render={matchProps => <Component {...matchProps} refreshToken={refreshToken}/>} />
+  ) : (
+    <Redirect to="/login" />
+  )
+}
 
 class Routes extends React.PureComponent {
   state = {
     token: '',
   }
-  componentDidMount() {
+  componentWillMount() {
     const token = localStorage.getItem(AUTH_TOKEN);
     if (token !== null && token !== undefined) {
       this.setState({ token });
@@ -25,7 +32,6 @@ class Routes extends React.PureComponent {
     } else {
       localStorage.removeItem(AUTH_TOKEN)
     }
-
     this.setState({
       token: data[AUTH_TOKEN],
     })
@@ -38,11 +44,11 @@ class Routes extends React.PureComponent {
           path="/"
           render={() => <Redirect to="/dashboard" />}
         />
-        <Route
+        <ProtectedRoute
           path="/dashboard"
-          render={props => (
-            <Dashboard {...props} token={this.state.token} refreshToken={this.refreshToken} />
-          )}
+          token={this.state.token}
+          component={Dashboard}
+          refreshToken={this.refreshToken}
         />
         <Route
           path="/signup"
@@ -56,6 +62,7 @@ class Routes extends React.PureComponent {
             <LoginPage {...props} refreshToken={this.refreshToken} />
           )}
         />
+        <Route component={NotFoundPage} />
       </Switch>
     )
   }

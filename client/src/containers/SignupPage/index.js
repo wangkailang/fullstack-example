@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
 import { Mutation } from 'react-apollo';
-import { Button, Row, Col, Form } from 'react-bootstrap';
+import { Button, Row, Col, Form, Alert } from 'react-bootstrap';
 import SIGNUP from '../../gqls/signup';
 import { AUTH_TOKEN } from '../../constants';
 import './style.css';
@@ -18,12 +18,10 @@ class SignupPage extends React.PureComponent {
   }
   confirm = async data => {
     const token = data.signup.token;
-    localStorage.setItem(AUTH_TOKEN, token);
     this.props.refreshToken({
-      [AUTH_TOKEN]: data,
+      [AUTH_TOKEN]: token,
     });
-    this.props.history.replace('/')
-    window.location.reload();
+    this.props.history.replace('/');
   }
   render() {
     return (
@@ -33,19 +31,25 @@ class SignupPage extends React.PureComponent {
           mutation={SIGNUP}
           onCompleted={this.confirm}
         >
-          {(signup) => (
+          {(signup, { error }) => (
             <Formik
               initialValues={initialValues}
-              onSubmit={values => {
-                signup({
+              onSubmit={async (values, { setSubmitting }) => {
+                setSubmitting(false);
+                await signup({
                   variables: {
                     input: values
                   }
-                })
+                });
               }}
             >
               {({ handleSubmit, isSubmitting }) => (
                 <Form onSubmit={handleSubmit}>
+                  {error && (
+                    <Alert variant="danger">
+                      {error.message}
+                    </Alert>
+                  )}
                   <Form.Group as={Row} controlId="name">
                     <Form.Label column sm="2">Name:</Form.Label>
                     <Col sm="10">
@@ -65,7 +69,7 @@ class SignupPage extends React.PureComponent {
                     </Col>
                   </Form.Group>
                   <div className="SignupPage__btn">
-                      <Button type="submit" disabled={isSubmitting || false}>
+                      <Button type="submit" disabled={isSubmitting}>
                       Signup
                     </Button>
                   </div>

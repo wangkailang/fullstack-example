@@ -23,12 +23,15 @@ class Navigation extends React.PureComponent {
     });
     window.location.href = '/';
   }
+  get token() {
+    return localStorage.getItem(AUTH_TOKEN);
+  }
   render() {
     return (
       <Nav className="flex-column">
         {navItemArray.map((item, key) => <NavItem key={key} {...item} />)}
-        {!this.props.token && <NavItem path="/login" title="login" />}
-        {this.props.token && (
+        {!this.token && <NavItem path="/login" title="login" />}
+        {this.token && (
           <div className="Navigation__item">
             <span onClick={this.handleLogout}>loginout</span>
           </div>
